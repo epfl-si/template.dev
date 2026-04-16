@@ -10,4 +10,4 @@ services:
         - MARIADB_USER=lil
         - MARIADB_PASSWORD=lil
       ports:
-        - 63306:3306
+        - 127.0.0.1:63306:3306
