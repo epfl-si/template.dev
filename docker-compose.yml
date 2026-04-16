@@ -1,0 +1,13 @@
+version: '3'
+services:
+    db:
+      image: mariadb:11.8
+      container_name: lil-mariadb
+      environment:
+        - MARIADB_ROOT_PASSWORD=ROOT
+        - MARIADB_ROOT_HOST=%
+        - MARIADB_DATABASE=lil
+        - MARIADB_USER=lil
+        - MARIADB_PASSWORD=lil
+      ports:
+        - 63306:3306

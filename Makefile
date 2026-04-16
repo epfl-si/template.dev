@@ -22,3 +22,7 @@ barcode-frontend:
 
 barcode-backend:
 	$(call _git_clone, epfl-si/barcode.backend, main)
+
+.PHONY: up
+up:
+    @docker compose up
