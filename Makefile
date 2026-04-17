@@ -6,15 +6,23 @@
 .make.vars:
 	@echo _GITHUB_BASE = $(if $(shell ssh -T git@github.com 2>&1|grep 'successful'),git@github.com:,https://github.com/) >> $@
 
-.PHONY: checkout
-checkout: barcode-frontend barcode-backend
+.PHONY: help
+help:
+	@echo "Main:"
+	@echo "  make help                 — Display this help"
+	@echo "Sub-Repositories:"
+	@echo "  make checkout             — Clone all sub-repositories if not already cloned"
+	@echo "  make git-pull             — Update all sub-repositories with git pull --rebase"
+	@echo "Setup:"
+	@echo "  make install-backend      — Install the backend dependencies"
+	@echo "  make install              — Install all dependencies"
+	@echo "App:"
+	@echo "  make start-db             — Start the database with Docker Compose"
+	@echo "  make stop-db              — Stop the database with Docker Compose"
+	@echo "  make start-backend        — Start the backend development server"
 
-.PHONY: git-pull
-git-pull: ## Walk down the directory to find repositories to update (with rebase!)
-	@set -e; for dir in `$(_find_git_depots)`; do (cd $$dir; echo "$$(tput bold)$$dir$$(tput sgr0)"; git pull --rebase --autostash; echo); done
+######## Sub-Repositories
 
-
-########################### Clone sub-repositories #############################
 _git_clone = devscripts/ensure-git-clone.sh $(_GITHUB_BASE)$(strip $(1)) $@ $(2); touch $@
 
 barcode-frontend:
@@ -23,6 +31,32 @@ barcode-frontend:
 barcode-backend:
 	$(call _git_clone, epfl-si/barcode.backend, main)
 
-.PHONY: up
-up:
+.PHONY: checkout
+checkout: barcode-frontend barcode-backend
+
+.PHONY: git-pull
+git-pull: ## Walk down the directory to find repositories to update (with rebase!)
+	@set -e; for dir in `$(_find_git_depots)`; do (cd $$dir; echo "$$(tput bold)$$dir$$(tput sgr0)"; git pull --rebase --autostash; echo); done
+
+######## Setup
+
+.PHONY: install-backend
+install-backend: barcode-backend
+	cd barcode-backend && npm install && npx prisma generate
+
+.PHONY: install
+install: install-backend
+
+######## App
+
+.PHONY: start-db
+start-db:
 	@docker compose up
+
+.PHONY: stop-db
+stop-db:
+	@docker compose down
+
+.PHONY: start-backend
+start-backend: barcode-backend
+	cd barcode-backend && npm run dev
