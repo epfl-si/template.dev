@@ -34,6 +34,7 @@ barcode-backend:
 .PHONY: checkout
 checkout: barcode-frontend barcode-backend
 
+_find_git_depots := find . \( -path ./volumes -prune -false \) -o -name .git -prune |xargs -n 1 dirname|grep -v 'ansible-deps-cache'
 .PHONY: git-pull
 git-pull: ## Walk down the directory to find repositories to update (with rebase!)
 	@set -e; for dir in `$(_find_git_depots)`; do (cd $$dir; echo "$$(tput bold)$$dir$$(tput sgr0)"; git pull --rebase --autostash; echo); done
