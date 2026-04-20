@@ -10,6 +10,7 @@
 help:
 	@echo "Main:"
 	@echo "  make help                 — Display this help"
+	@echo "  make print-env            — Print environment variables"
 	@echo "Sub-Repositories:"
 	@echo "  make checkout             — Clone all sub-repositories if not already cloned"
 	@echo "  make git-pull             — Update all sub-repositories with git pull --rebase"
@@ -20,6 +21,26 @@ help:
 	@echo "  make start-db             — Start the database with Docker Compose"
 	@echo "  make stop-db              — Stop the database with Docker Compose"
 	@echo "  make start-backend        — Start the backend development server"
+
+# To add all variable to your shell, use
+# export $(xargs < /keybase/team/epfl_lil/frontend/env);
+check-env:
+ifeq ($(wildcard /keybase/team/epfl_lil/frontend/local/env),)
+	@echo "Be sure to have access to /keybase/team/epfl_lil/frontend/local/env"
+	@exit 1
+else
+include /keybase/team/epfl_lil/frontend/local/env
+export
+endif
+
+.PHONY: print-env
+print-env: check-env
+	@echo "LIL_REACT_APP_AUTH_SERVER_URL=${LIL_REACT_APP_AUTH_SERVER_URL}"
+	@echo "LIL_REACT_APP_HOMEPAGE_URL=${LIL_REACT_APP_HOMEPAGE_URL}"
+	@echo "LIL_REACT_APP_GRAPHQL_ENDPOINT_URL=${LIL_REACT_APP_GRAPHQL_ENDPOINT_URL}"
+	@echo "LIL_REACT_APP_ENDPOINT_URL=${LIL_REACT_APP_ENDPOINT_URL}"
+	@echo "LIL_OIDC_SCOPE=${LIL_OIDC_SCOPE}"
+	@echo "LIL_OIDC_CLIENT_ID=${LIL_OIDC_CLIENT_ID}"
 
 ######## Sub-Repositories
 
