@@ -82,3 +82,7 @@ stop-db:
 .PHONY: start-backend
 start-backend: barcode-backend
 	cd barcode-backend && npm run dev
+
+.PHONY: start-frontend
+start-frontend: barcode-frontend
+	cd barcode-frontend && npm run dev
