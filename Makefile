@@ -16,10 +16,12 @@ help:
 	@echo "  make git-pull             — Update all sub-repositories with git pull --rebase"
 	@echo "Setup:"
 	@echo "  make install-backend      — Install the backend dependencies"
+	@echo "  make install-frontend     — Install the frontend dependencies"
 	@echo "  make install              — Install all dependencies"
 	@echo "App:"
 	@echo "  make start-db             — Start the database with Docker Compose"
 	@echo "  make stop-db              — Stop the database with Docker Compose"
+	@echo "  make start-frontend       — Start the frontend development server"
 	@echo "  make start-backend        — Start the backend development server"
 
 FRONTEND_ENV := /keybase/team/epfl_lil/frontend/local/env
@@ -77,8 +79,12 @@ git-pull: ## Walk down the directory to find repositories to update (with rebase
 install-backend: barcode-backend
 	cd barcode-backend && npm install && npx prisma generate
 
+.PHONY: install-frontend
+install-frontend: barcode-frontend
+	cd barcode-frontend && npm install
+
 .PHONY: install
-install: install-backend
+install: install-backend install-frontend
 
 ######## App
 
