@@ -22,25 +22,36 @@ help:
 	@echo "  make stop-db              — Stop the database with Docker Compose"
 	@echo "  make start-backend        — Start the backend development server"
 
-# To add all variable to your shell, use
-# export $(xargs < /keybase/team/epfl_lil/frontend/env);
-check-env:
-ifeq ($(wildcard /keybase/team/epfl_lil/frontend/local/env),)
-	@echo "Be sure to have access to /keybase/team/epfl_lil/frontend/local/env"
-	@exit 1
-else
-include /keybase/team/epfl_lil/frontend/local/env
-export
+FRONTEND_ENV := /keybase/team/epfl_lil/frontend/local/env
+BACKEND_ENV  := /keybase/team/epfl_lil/backend/local/env
+
+ifeq ($(wildcard $(FRONTEND_ENV)),)
+$(error Missing required env file: $(FRONTEND_ENV))
 endif
+ifeq ($(wildcard $(BACKEND_ENV)),)
+$(error Missing required env file: $(BACKEND_ENV))
+endif
+include $(FRONTEND_ENV)
+include $(BACKEND_ENV)
+export
 
 .PHONY: print-env
-print-env: check-env
+print-env:
+	@echo "----- Frontend -----"
 	@echo "LIL_REACT_APP_AUTH_SERVER_URL=${LIL_REACT_APP_AUTH_SERVER_URL}"
 	@echo "LIL_REACT_APP_HOMEPAGE_URL=${LIL_REACT_APP_HOMEPAGE_URL}"
 	@echo "LIL_REACT_APP_GRAPHQL_ENDPOINT_URL=${LIL_REACT_APP_GRAPHQL_ENDPOINT_URL}"
 	@echo "LIL_REACT_APP_ENDPOINT_URL=${LIL_REACT_APP_ENDPOINT_URL}"
 	@echo "LIL_OIDC_SCOPE=${LIL_OIDC_SCOPE}"
 	@echo "LIL_OIDC_CLIENT_ID=${LIL_OIDC_CLIENT_ID}"
+	@echo ""
+	@echo "----- Backend -----"
+	@echo "DATABASE_URL=${DATABASE_URL}"
+	@echo "DATABASE_NAME=${DATABASE_NAME}"
+	@echo "DATABASE_USER=${DATABASE_USER}"
+	@echo "DATABASE_PASSWORD=${DATABASE_PASSWORD}"
+	@echo "DATABASE_HOST=${DATABASE_HOST}"
+	@echo "DATABASE_PORT=${DATABASE_PORT}"
 
 ######## Sub-Repositories
 
