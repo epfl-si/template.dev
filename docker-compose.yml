@@ -1,13 +1,11 @@
 version: '3'
 services:
     db:
-      image: mariadb:11.8
-      container_name: lil-mariadb
+      image: postgres:18.1
+      container_name: lil-postgres
       environment:
-        - MARIADB_ROOT_PASSWORD=ROOT
-        - MARIADB_ROOT_HOST=%
-        - MARIADB_DATABASE=lil
-        - MARIADB_USER=lil
-        - MARIADB_PASSWORD=lil
+        - POSTGRES_USER=root
+        - POSTGRES_PASSWORD=ROOT
+        - POSTGRES_DB=lil
       ports:
-        - 127.0.0.1:63306:3306
+        - 127.0.0.1:65432:5432
