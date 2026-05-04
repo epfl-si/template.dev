@@ -1,13 +1,13 @@
 
 
-# Barcode dev kit
+# LIL Dev kit
 
-This repository provides a centralized development environment for Barcode project.
+This repository provides a centralized development environment for LIL project.
 It provides setup and execution of all services required for local development.
 
 Sub-repositories
-* [Backend](https://github.com/epfl-si/barcode.backend)
-* [Frontend](https://github.com/epfl-si/barcode.frontend)
+* [Backend](https://github.com/epfl-si/lil.backend)
+* [Frontend](https://github.com/epfl-si/lil.frontend)
 
 ## Sub-respositories management
 

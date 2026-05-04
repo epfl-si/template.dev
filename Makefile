@@ -54,14 +54,14 @@ print-env:
 
 _git_clone = devscripts/ensure-git-clone.sh $(_GITHUB_BASE)$(strip $(1)) $@ $(2); touch $@
 
-barcode-frontend:
-	$(call _git_clone, epfl-si/barcode.frontend, main)
+lil-frontend:
+	$(call _git_clone, epfl-si/lil.frontend, main)
 
-barcode-backend:
-	$(call _git_clone, epfl-si/barcode.backend, main)
+lil-backend:
+	$(call _git_clone, epfl-si/lil.backend, main)
 
 .PHONY: checkout
-checkout: barcode-frontend barcode-backend
+checkout: lil-frontend lil-backend
 
 _find_git_depots := find . \( -path ./volumes -prune -false \) -o -name .git -prune |xargs -n 1 dirname|grep -v 'ansible-deps-cache'
 .PHONY: git-pull
@@ -71,12 +71,12 @@ git-pull: ## Walk down the directory to find repositories to update (with rebase
 ######## Setup
 
 .PHONY: install-backend
-install-backend: barcode-backend
-	cd barcode-backend && npm install && npx prisma generate
+install-backend: lil-backend
+	cd lil-backend && npm install && npx prisma generate
 
 .PHONY: install-frontend
-install-frontend: barcode-frontend
-	cd barcode-frontend && npm install
+install-frontend: lil-frontend
+	cd lil-frontend && npm install
 
 .PHONY: install
 install: install-backend install-frontend
@@ -92,9 +92,9 @@ stop-db:
 	@docker compose down
 
 .PHONY: start-backend
-start-backend: barcode-backend
-	cd barcode-backend && npm run dev
+start-backend: lil-backend
+	cd lil-backend && npm run dev
 
 .PHONY: start-frontend
-start-frontend: barcode-frontend
-	cd barcode-frontend && npm run dev
+start-frontend: lil-frontend
+	cd lil-frontend && npm run dev
