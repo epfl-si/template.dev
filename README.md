@@ -45,6 +45,12 @@ Start the backend
 make start-backend
 ```
 
+Start the frontend
+
+```bash
+make start-frontend
+```
+
 ## Help
 
 ```bash
